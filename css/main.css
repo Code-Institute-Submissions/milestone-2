@@ -1,3 +1,6 @@
+html {
+  overflow-x: hidden; }
+
 nav {
   margin-bottom: 30px; }
 
@@ -8,6 +11,10 @@ p {
   margin-top: 15px; }
 
 .btn {
-  margin-top: 10px; }
+  margin-top: 10px;
+  width: 100%; }
+
+[type='radio'] {
+  display: none; }
 
 /*# sourceMappingURL=main.css.map */

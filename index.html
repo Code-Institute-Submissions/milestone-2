@@ -33,25 +33,42 @@
         <section>
             <h3>Filters</h3>
             <h6>Where would you like to go?</h6>
-            <p class="lead"><small>Select country:</small></p>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            </form>
-            <p class="lead"><small>Select city:</small></p>
+            <p class="lead"><small>Select town or city:</small></p>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search">
             </form>
             <h6 id="looking-for">What are you looking for?</h6>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-primary">
-                    <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Active
-                </label>
-                <label class="btn btn-primary">
-                    <input type="radio" name="options" id="option2" autocomplete="off"> Radio
-                </label>
-                <label class="btn btn-primary active">
-                    <input type="radio" name="options" id="option3" autocomplete="off"> Radio
-                </label>
+            <div class="row">
+                <div class="col">
+                    <label class="btn btn-primary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Accommodation
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> Airports
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> Bars/Restaurants
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option4" autocomplete="off"> Public Transport
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option5" autocomplete="off"> Supermarkets
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option6" autocomplete="off"> Tourist Attractions
+                    </label>
+                </div>
             </div>
             <button type="button" class="btn btn-primary" onclick="reset()">Reset</button>
         </section>
