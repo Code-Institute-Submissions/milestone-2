@@ -1,43 +1,49 @@
-// Initialise variables
-let category = $('input[type=radio][name=options]').get(0).value
-let city = null
-console.log(category)
+$(function() {
 
-// Get autocomplete working
-var input = document.getElementById('cities')
-var options = {
-  types: ['(cities)'],
-  componentRestrictions: {country: 'uk'}
-}
-
-autocomplete = new google.maps.places.Autocomplete(input, options)
+    // Initialise variables
+    let category = $('input[type=radio][name=options]').get(0).value
+    let city = null
 
 
-// Does search on map
-const mapSearch = () => {
-    console.log('city', city)
-    console.log('category', category)
-    if (city == null) {
-        $('#city-error').removeClass('no')
-        return
-    } else {
-        $('#city-error').addClass('no')
+    // Get autocomplete working
+    var input = document.getElementById('cities') // should I be be using const or let here?
+    var options = {
+        types: ['(cities)'],
+        componentRestrictions: { country: 'uk' }
     }
-    
-    
-                                                            // todo - write google maps code to link to the data (category and city) I've just received
-}
+
+    autocomplete = new google.maps.places.Autocomplete(input, options)
 
 
-// Autocomplete callbacks
-autocomplete.addListener('place_changed', () => {
-    city = input.value
-    mapSearch()
-})
+    // Does search on map
+    const mapSearch = () => {
+        console.log('city:', city)
+        console.log('category:', category)
+
+        // Show the "Please select a town or city" warning
+        if (city == null) {
+            $('#city-error').removeClass('no')
+            return
+        }
+        else {
+            $('#city-error').addClass('no')
+        }
 
 
-// Radio button callbacks
-$('input[type=radio][name=options]').change(function() {
-    category=this.value
-    mapSearch()
+        // todo - write google maps code to link to the data (category and city) I've just received
+    }
+
+
+    // Autocomplete callbacks
+    autocomplete.addListener('place_changed', () => {
+        city = input.value
+        mapSearch()
+    })
+
+
+    // Radio button callbacks
+    $('input[type=radio][name=options]').change(function() {
+        category = this.value
+        mapSearch()
+    })
 })
