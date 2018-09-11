@@ -1,8 +1,8 @@
 html {
   overflow-x: hidden; }
 
-nav {
-  margin-bottom: 30px; }
+h3 {
+  margin-top: 30px; }
 
 p {
   margin-bottom: 0.3rem; }
@@ -14,7 +14,10 @@ p {
   margin-top: 10px;
   width: 100%; }
 
-[type='radio'] {
+.error {
+  display: block; }
+
+.no.error {
   display: none; }
 
 /*# sourceMappingURL=main.css.map */
