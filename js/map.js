@@ -25,12 +25,14 @@ $(function() {
             $('#city-error').removeClass('no')
             return
         }
-        else {
-            $('#city-error').addClass('no')
-        }
 
+        // Adds class 'no' if it isn't already there
+        $('#city-error').addClass('no')
+        
 
-        // todo - write google maps code to link to the data (category and city) I've just received
+                                        // todo - write google maps code to link to the data (category and city) I've just received
+        
+        
     }
 
 
