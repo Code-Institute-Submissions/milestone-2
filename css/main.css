@@ -12,7 +12,16 @@ p {
 
 .btn {
   margin-top: 10px;
-  width: 100%; }
+  padding-left: 0;
+  padding-right: 0;
+  background-color: transparent;
+  color: #343a40;
+  border: 0; }
+
+.btn-primary:hover {
+  color: #226be8;
+  background-color: transparent;
+  border: none; }
 
 #city-error {
   color: red; }
@@ -22,5 +31,13 @@ p {
 
 .no.error {
   display: none; }
+
+#map {
+  width: 100%;
+  height: 75vh; }
+
+@media (max-width: 575.98px) {
+  .nav-link {
+    font-size: 80%; } }
 
 /*# sourceMappingURL=main.css.map */
