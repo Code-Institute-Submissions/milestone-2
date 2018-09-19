@@ -6,23 +6,36 @@
 var map, places, infoWindow;
 var markers = [];
 var autocomplete;
-var countryRestrict = {'country': 'uk'}
+var countryRestrict = { 'country': 'uk' }
 var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
 var hostnameRegexp = new RegExp('^https?://.+?/');
 
 
 var countries = {
-        'uk': {
-          center: {lat: 54.8, lng: -4.6},
-          zoom: 5
-        }
-      };
+    'uk': {
+        center: { lat: 54.8, lng: -4.6 },
+        zoom: 5
+    }
+};
+
+
+//Resets the map and input fields.
+function reset() {
+    clearResults();
+    clearMarkers();
+    $('#category')[0].selectedIndex = 0;
+    $("#autocomplete").val("");
+    $('#results-heading').innerHTML("");                // there is still <h6>results</h6>
+    map.setZoom(countries['uk'].zoom);
+    map.setCenter(countries["uk"].center);
+    place = "";
+}
 
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: countries['uk'].zoom,
-          center: countries['uk'].center,
+        center: countries['uk'].center,
         mapTypeControl: false,
         panControl: false, // edit these??
         zoomControl: false,
@@ -70,43 +83,52 @@ function onPlaceChanged() {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchAccommodation();
-        } else {
+        }
+        else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    } else if ($("#bars").is(':selected')) {
+    }
+    else if ($("#bars").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchBars();
-        } else {
+        }
+        else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    } else if ($("#public").is(':selected')) {
+    }
+    else if ($("#public").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchPublic();
-        } else {
+        }
+        else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    } else if ($("#takeaway").is(':selected')) {
+    }
+    else if ($("#takeaway").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchTakeaway();
-        } else {
+        }
+        else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    } else if ($("#tourist").is(':selected')) {
+    }
+    else if ($("#tourist").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchTourist();
-        } else {
+        }
+        else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
     }
@@ -402,7 +424,8 @@ function buildIWContent(place) {
         document.getElementById('iw-phone-row').style.display = '';
         document.getElementById('iw-phone').textContent =
             place.formatted_phone_number;
-    } else {
+    }
+    else {
         document.getElementById('iw-phone-row').style.display = 'none';
     }
 
@@ -415,13 +438,15 @@ function buildIWContent(place) {
         for (var i = 0; i < 5; i++) {
             if (place.rating < (i + 0.5)) {
                 ratingHtml += '&#10025;';
-            } else {
+            }
+            else {
                 ratingHtml += '&#10029;';
             }
             document.getElementById('iw-rating-row').style.display = '';
             document.getElementById('iw-rating').innerHTML = ratingHtml;
         }
-    } else {
+    }
+    else {
         document.getElementById('iw-rating-row').style.display = 'none';
     }
 
@@ -437,7 +462,8 @@ function buildIWContent(place) {
         }
         document.getElementById('iw-website-row').style.display = '';
         document.getElementById('iw-website').textContent = website;
-    } else {
+    }
+    else {
         document.getElementById('iw-website-row').style.display = 'none';
     }
 }
