@@ -4,5 +4,5 @@ Since you're wanting to test an API, my best advice to you would be to document 
 
 
 ## Credits
-Code for the google maps and places api (reword all fo this <<) was edited using code found on the Google Maps Platform (https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-hotelsearch). I edited ...
-I put all the CSS from this code into a separate CSS document called "google.css" which is in my "css" folder.
+In maps.js I largely used and adapted code found on the Google Maps Platform (https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-hotelsearch).
+I also integrated ideas used in an example website provided by Code Institute in my JavaScript document. This website was produced by Ben Hasselgren: (https://benhasselgren.github.io/ifd-milestone-project-pages/)
