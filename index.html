@@ -21,8 +21,11 @@
 <body>
 
 
+    <!-- Nav -->    
+
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="index.html">Happy Holidays</a>
+        <a class="navbar-brand" href="#">Happy Holidays</a>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="#">You could go anywhere...</a>
@@ -33,29 +36,35 @@
 
     <section class="container-fluid">
 
+
+    <!-- Filters -->
+
+
         <section>
             <h3>Filters</h3>
             <h6>Where would you like to go?</h6>
             <p class="lead"><small>Select town or city:</small></p>
             <div id="locationField">
-                <input id="autocomplete" placeholder="Enter a city" type="text" />
+                <input id="autocomplete" placeholder="Enter a town or city" type="text" />
             </div>
             <div id="city-error" class="no error">
-                Please select a town or city
+                Please enter a town or city.
             </div>
             <h6 id="looking-for">What are you looking for?</h6>
             <div id="controls">
                 <select id="category">
                     <option value="select">Select One</option>
-                    <option value="accom">Accommodation</option>
-                    <option value="bars">Bars/Restaurants</option>
-                    <option value="public">Public Transport</option>
-                    <option value="super">Supermarkets</option>
-                    <option value="tourist">Tourist Attractions</option>
+                    <option id="accom" value="accom">Accommodation</option>
+                    <option id="bars" value="bars">Bars/Restaurants</option>
+                    <option id="tourist" value="tourist">Tourist Attractions</option>
                 </select>
             </div>
             <button type="button" class="btn btn-primary" onclick="reset()"><h6>Reset   <i class="fas fa-redo-alt"></i></h6></button>
         </section>
+
+
+        <!-- Maps -->
+
 
         <section>
             <h3>Map</h3>
@@ -88,8 +97,12 @@
             </div>
         </section>
         
+        
+        <!-- Results -->
+        
+        
         <section>
-            <h3>Results</h3>
+            <h3 id="results-heading"></h3>
             <div id="listing">
                 <table id="resultsTable">
                     <tbody id="results"></tbody>
@@ -97,7 +110,16 @@
             </div>
         </section>
 
+
     </section>
+    
+    
+    <!-- Footer -->
+    
+    
+    <footer>
+        
+    </footer>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
