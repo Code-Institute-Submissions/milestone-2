@@ -1,73 +1,32 @@
-/*
-$(function() {
-
-    // Initialise variables
-    let category = $('input[type=radio][name=options]').get(0).value
-    let city = null
-
-
-    // Get autocomplete working
-    var input = document.getElementById('cities') // should I be be using const or let here?
-    var options = {
-        types: ['(cities)'],
-        componentRestrictions: { country: 'uk' }
-    }
-
-    autocomplete = new google.maps.places.Autocomplete(input, options)
-
-
-    // Does search on map
-    const mapSearch = () => {
-        console.log('city:', city)
-        console.log('category:', category)
-
-        // Show the "Please enter a town or city" warning
-        if (city == null) {
-            $('#city-error').removeClass('no')
-            return
-        }
-        // Adds class 'no' if it isn't already there
-        $('#city-error').addClass('no')
-    }
-
-
-    // Autocomplete callbacks
-    autocomplete.addListener('place_changed', () => {
-        city = input.value
-        mapSearch()
-    })
-
-
-    // Radio button callbacks
-    $('input[type=radio][name=options]').change(function() {
-        category = this.value
-        mapSearch()
-    })
-})
-*/
-
 // This document allows the user to find accommodation, bars/cafes/restaurants, public
 // transport, takeaways and tourist attractions in a given city.
-// It then displays markers for all the hotels returned, with on-click details
+// It then displays markers for all the places returned, with on-click details
 // for each set of filter parameters.
 
 var map, places, infoWindow;
 var markers = [];
 var autocomplete;
+var countryRestrict = {'country': 'uk'}
 var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
 var hostnameRegexp = new RegExp('^https?://.+?/');
-var city = null // do I need this?
+
+
+var countries = {
+        'uk': {
+          center: {lat: 54.8, lng: -4.6},
+          zoom: 5
+        }
+      };
 
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 54.8, lng: -4.6 },
-        zoom: 5,
+        zoom: countries['uk'].zoom,
+          center: countries['uk'].center,
         mapTypeControl: false,
         panControl: false, // edit these??
         zoomControl: false,
         streetViewControl: false
-        componentRestrictions: { country: 'uk' }
     });
 
 
@@ -111,52 +70,43 @@ function onPlaceChanged() {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchAccommodation();
-        }
-        else {
+        } else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    }
-    else if ($("#bars").is(':selected')) {
+    } else if ($("#bars").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchBars();
-        }
-        else {
+        } else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    }
-    else if ($("#public").is(':selected')) {
+    } else if ($("#public").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchPublic();
-        }
-        else {
+        } else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    }
-    else if ($("#takeaway").is(':selected')) {
+    } else if ($("#takeaway").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchTakeaway();
-        }
-        else {
+        } else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
-    }
-    else if ($("#tourist").is(':selected')) {
+    } else if ($("#tourist").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
             searchTourist();
-        }
-        else {
+        } else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
         }
     }
@@ -175,7 +125,7 @@ function searchAccommodation() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            document.getElementById('results').innerHTML = "Results";
+            document.getElementById('results-heading').innerHTML = "Results";
 
 
             // Create a marker for each accommodation found, and assign a
@@ -217,7 +167,7 @@ function searchBars() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            document.getElementById('results').innerHTML = "Results";
+            document.getElementById('results-heading').innerHTML = "Results";
 
 
             // Create a marker for each resteraunt found, and add letter.
@@ -258,7 +208,7 @@ function searchPublic() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            document.getElementById('results').innerHTML = "Results";
+            document.getElementById('results-heading').innerHTML = "Results";
 
 
             // Create a marker for each public transport station found, and add letter.
@@ -299,7 +249,7 @@ function searchTakeaway() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            document.getElementById('results').innerHTML = "Results";
+            document.getElementById('results-heading').innerHTML = "Results";
 
 
             // Create a marker for each takeaway found, and add letter.
@@ -340,7 +290,7 @@ function searchTourist() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            document.getElementById('results').innerHTML = "Results";
+            document.getElementById('results-heading').innerHTML = "Results";
 
 
             // Create a marker for each tourist attraction found, and
@@ -380,32 +330,6 @@ function clearMarkers() {
 }
 
 
-// Set the country restriction based on user input.     CHANGE FOR CATEGORY
-// Also center and zoom the map on the given country.
-function setAutocompleteCategory() {
-    var country = document.getElementById('category').value;
-    if (category == 'select') { // do I want to use this code?
-        // Show the "Please enter a town or city" warning
-        if (city == null) {
-            $('#city-error').removeClass('no')
-            return
-        }
-        // Adds class 'no' if it isn't already there
-        $('#city-error').addClass('no')
-
-    }
-    else {
-
-        ?
-        ?
-        ?
-
-    }
-    clearResults();
-    clearMarkers();
-}
-
-
 function dropMarker(i) {
     return function() {
         markers[i].setMap(map);
@@ -413,12 +337,14 @@ function dropMarker(i) {
 }
 
 
+// Adds a results table into the results section
 function addResult(result, i) {
     var results = document.getElementById('results');
     var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
     var markerIcon = MARKER_PATH + markerLetter + '.png';
 
 
+    // Creates striped effect in results table
     var tr = document.createElement('tr');
     tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
     tr.onclick = function() {
@@ -449,8 +375,8 @@ function clearResults() {
 }
 
 
-// Get the place details for a hotel/all three or just one. Show the information in an info window,
-// anchored on the marker for the hotel* that the user selected.
+// Get the place details for each search result. Show the information in an info
+// window, anchored on the marker for the place that the user selected.
 function showInfoWindow() {
     var marker = this;
     places.getDetails({ placeId: marker.placeResult.place_id },
@@ -476,8 +402,7 @@ function buildIWContent(place) {
         document.getElementById('iw-phone-row').style.display = '';
         document.getElementById('iw-phone').textContent =
             place.formatted_phone_number;
-    }
-    else {
+    } else {
         document.getElementById('iw-phone-row').style.display = 'none';
     }
 
@@ -490,15 +415,13 @@ function buildIWContent(place) {
         for (var i = 0; i < 5; i++) {
             if (place.rating < (i + 0.5)) {
                 ratingHtml += '&#10025;';
-            }
-            else {
+            } else {
                 ratingHtml += '&#10029;';
             }
             document.getElementById('iw-rating-row').style.display = '';
             document.getElementById('iw-rating').innerHTML = ratingHtml;
         }
-    }
-    else {
+    } else {
         document.getElementById('iw-rating-row').style.display = 'none';
     }
 
@@ -514,8 +437,7 @@ function buildIWContent(place) {
         }
         document.getElementById('iw-website-row').style.display = '';
         document.getElementById('iw-website').textContent = website;
-    }
-    else {
+    } else {
         document.getElementById('iw-website-row').style.display = 'none';
     }
 }
