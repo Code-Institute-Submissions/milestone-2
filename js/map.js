@@ -46,8 +46,8 @@ $(function() {
 })
 */
 
-// This document allows the user to find accommodation, bars/restaurants and 
-// tourist attractions in a given city.
+// This document allows the user to find accommodation, bars/cafes/restaurants, public
+// transport, takeaways and tourist attractions in a given city.
 // It then displays markers for all the hotels returned, with on-click details
 // for each set of filter parameters.
 
@@ -57,20 +57,6 @@ var autocomplete;
 var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
 var hostnameRegexp = new RegExp('^https?://.+?/');
 var city = null // do I need this?
-
-
-var category = {
-    'accom': {
-        types: 'lodging'
-    },
-    'bars': {
-        types: 'bar',
-        'restaurant'
-    },
-    'tourist': {
-        types: { 'amusement_park', 'aquarium', 'art_gallery', 'museum', 'stadium', 'zoo' }
-    }
-};
 
 
 function initMap() {
@@ -106,6 +92,8 @@ function initMap() {
     autocomplete.addListener('place_changed', onPlaceChanged);
     document.getElementById('accom').addEventListener('change', onPlaceChanged);
     document.getElementById('bars').addEventListener('change', onPlaceChanged);
+    document.getElementById('public').addEventListener('change', onPlaceChanged);
+    document.getElementById('takeaway').addEventListener('change', onPlaceChanged);
     document.getElementById('tourist').addEventListener('change', onPlaceChanged);
     document.getElementById('reset-button').addEventListener("click", setAutocompleteCategory);
 }
@@ -117,7 +105,7 @@ function initMap() {
 // When the user selects a city, get the place details for the city and
 // zoom the map in on the city.
 function onPlaceChanged() {
-    if ($("#accom").is(':selected')) {
+    if ($("#accommodation").is(':selected')) {
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
@@ -133,7 +121,29 @@ function onPlaceChanged() {
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
-            searchRestaurant();
+            searchBars();
+        }
+        else {
+            $('#autocomplete').attr("placeholder", "Enter a town or city");
+        }
+    }
+    else if ($("#public").is(':selected')) {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchPublic();
+        }
+        else {
+            $('#autocomplete').attr("placeholder", "Enter a town or city");
+        }
+    }
+    else if ($("#takeaway").is(':selected')) {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchTakeaway();
         }
         else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
@@ -144,7 +154,7 @@ function onPlaceChanged() {
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
-            searchAttractions();
+            searchTourist();
         }
         else {
             $('#autocomplete').attr("placeholder", "Enter a town or city");
@@ -165,6 +175,7 @@ function searchAccommodation() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
+            document.getElementById('results').innerHTML = "Results";
 
 
             // Create a marker for each accommodation found, and assign a
@@ -184,6 +195,171 @@ function searchAccommodation() {
 
                 // If the user clicks an accommodation marker, show the details
                 // of that accommodation in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+
+// Search for bars, cafes and restaurants in the selected city, within the viewport of the map.
+function searchBars() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['bar', 'cafe', 'restaurant']
+    };
+
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearResults();
+            clearMarkers();
+            document.getElementById('results').innerHTML = "Results";
+
+
+            // Create a marker for each resteraunt found, and add letter.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+
+                // Use animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+
+
+                // If the user clicks a marker, show the details of that bar,
+                // cafe or restaurant in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+
+// Search for public transport in the selected city, within the viewport of the map.
+function searchPublic() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['bus_station', 'subway_station', 'train_station', 'transit_station']
+    };
+
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearResults();
+            clearMarkers();
+            document.getElementById('results').innerHTML = "Results";
+
+
+            // Create a marker for each public transport station found, and add letter.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+
+                // Use animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+
+
+                // If the user clicks a marker, show the details of that public
+                // transport station in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+
+// Search for takeaways in the selected city, within the viewport of the map.
+function searchTakeaway() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['meal_delivery', 'meal_takeaway']
+    };
+
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearResults();
+            clearMarkers();
+            document.getElementById('results').innerHTML = "Results";
+
+
+            // Create a marker for each takeaway found, and add letter.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+
+                // Use animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+
+
+                // If the user clicks a marker, show the details of that
+                // takeaway in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+
+// Search for tourist attractions in the selected city, within the viewport of the map.
+function searchTourist() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['amusement_park', 'aquarium', 'art_gallery', 'museum', 'stadium', 'zoo']
+    };
+
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearResults();
+            clearMarkers();
+            document.getElementById('results').innerHTML = "Results";
+
+
+            // Create a marker for each tourist attraction found, and
+            // assign a letter of the alphabetic to each marker icon.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+
+                // Use marker animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+
+
+                // If the user clicks a marker, show the details of that tourist
+                // attraction in an info window.
                 markers[i].placeResult = results[i];
                 google.maps.event.addListener(markers[i], 'click', showInfoWindow);
                 setTimeout(dropMarker(i), i * 100);
@@ -221,7 +397,8 @@ function setAutocompleteCategory() {
     else {
 
         ?
-        ? ?
+        ?
+        ?
 
     }
     clearResults();
