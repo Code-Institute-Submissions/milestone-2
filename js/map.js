@@ -21,19 +21,13 @@ $(function() {
         console.log('city:', city)
         console.log('category:', category)
 
-        // Show the "Please select a town or city" warning
+        // Show the "Please enter a town or city" warning
         if (city == null) {
             $('#city-error').removeClass('no')
             return
         }
-
         // Adds class 'no' if it isn't already there
         $('#city-error').addClass('no')
-        
-
-// todo - write google maps code to link to the data (category and city) I've just received
-        
-        
     }
 
 
@@ -52,110 +46,144 @@ $(function() {
 })
 */
 
-// Google map code
-
-// This example uses the autocomplete feature of the Google Places API.
-      // It allows the user to find all hotels in a given place, within a given
-      // country. It then displays markers for all the hotels returned,
-      // with on-click details for each hotel.
-
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+// This document allows the user to find accommodation, bars/restaurants and 
+// tourist attractions in a given city.
+// It then displays markers for all the hotels returned, with on-click details
+// for each set of filter parameters.
 
 var map, places, infoWindow;
 var markers = [];
 var autocomplete;
 var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
 var hostnameRegexp = new RegExp('^https?://.+?/');
+var city = null // do I need this?
 
-var countries = {
-    'uk': {
-        center: { lat: 54.8, lng: -4.6 },
-        zoom: 5
+
+var category = {
+    'accom': {
+        types: 'lodging'
+    },
+    'bars': {
+        types: 'bar',
+        'restaurant'
+    },
+    'tourist': {
+        types: { 'amusement_park', 'aquarium', 'art_gallery', 'museum', 'stadium', 'zoo' }
     }
 };
 
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: countries['uk'].zoom,
-        center: countries['uk'].center,
+        center: { lat: 54.8, lng: -4.6 },
+        zoom: 5,
         mapTypeControl: false,
-        panControl: false,              // edit these??
+        panControl: false, // edit these??
         zoomControl: false,
         streetViewControl: false
+        componentRestrictions: { country: 'uk' }
     });
+
 
     infoWindow = new google.maps.InfoWindow({
         content: document.getElementById('info-content')
     });
 
+
     // Create the autocomplete object and associate it with the UI input control.
     // Place type "cities".
-    
-    
-    
-    
-    
-    // #category
-    
-    
-    
-    
-    
     autocomplete = new google.maps.places.Autocomplete(
         /** @type {!HTMLInputElement} */
         (
             document.getElementById('autocomplete')), {
             types: ['(cities)'],
+            componentRestrictions: { country: 'uk' }
         });
     places = new google.maps.places.PlacesService(map);
 
-    autocomplete.addListener('place_changed', onPlaceChanged);
 
-    // Add a DOM event listener to react when the user selects a country.
-    document.getElementById('category').addEventListener(
-        'change', setAutocompleteCategory);
+    // Event listeners.
+    autocomplete.addListener('place_changed', onPlaceChanged);
+    document.getElementById('accom').addEventListener('change', onPlaceChanged);
+    document.getElementById('bars').addEventListener('change', onPlaceChanged);
+    document.getElementById('tourist').addEventListener('change', onPlaceChanged);
+    document.getElementById('reset-button').addEventListener("click", setAutocompleteCategory);
 }
+
+
+// Copy equivalent code from google.js:115-155+
+
 
 // When the user selects a city, get the place details for the city and
 // zoom the map in on the city.
 function onPlaceChanged() {
-    var place = autocomplete.getPlace();
-    if (place.geometry) {
-        map.panTo(place.geometry.location);
-        map.setZoom(15);
-        search();
+    if ($("#accom").is(':selected')) {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchAccommodation();
+        }
+        else {
+            $('#autocomplete').attr("placeholder", "Enter a town or city");
+        }
     }
-    else {
-        document.getElementById('autocomplete').placeholder = 'Enter a city';
+    else if ($("#bars").is(':selected')) {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchRestaurant();
+        }
+        else {
+            $('#autocomplete').attr("placeholder", "Enter a town or city");
+        }
+    }
+    else if ($("#tourist").is(':selected')) {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchAttractions();
+        }
+        else {
+            $('#autocomplete').attr("placeholder", "Enter a town or city");
+        }
     }
 }
 
-// Search for hotels in the selected city, within the viewport of the map.
-function search() {
+
+// Search for accommodation in the selected city, within the viewport of the map.
+function searchAccommodation() {
     var search = {
         bounds: map.getBounds(),
         types: ['lodging']
     };
 
+
     places.nearbySearch(search, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearResults();
             clearMarkers();
-            // Create a marker for each hotel found, and
-            // assign a letter of the alphabetic to each marker icon.
+
+
+            // Create a marker for each accommodation found, and assign a
+            // letter of the alphabetic to each marker icon.
             for (var i = 0; i < results.length; i++) {
                 var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
                 var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+
                 // Use marker animation to drop the icons incrementally on the map.
                 markers[i] = new google.maps.Marker({
                     position: results[i].geometry.location,
                     animation: google.maps.Animation.DROP,
                     icon: markerIcon
                 });
-                // If the user clicks a hotel marker, show the details of that hotel
-                // in an info window.
+
+
+                // If the user clicks an accommodation marker, show the details
+                // of that accommodation in an info window.
                 markers[i].placeResult = results[i];
                 google.maps.event.addListener(markers[i], 'click', showInfoWindow);
                 setTimeout(dropMarker(i), i * 100);
@@ -164,6 +192,7 @@ function search() {
         }
     });
 }
+
 
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {
@@ -174,34 +203,31 @@ function clearMarkers() {
     markers = [];
 }
 
+
 // Set the country restriction based on user input.     CHANGE FOR CATEGORY
 // Also center and zoom the map on the given country.
-/*function setAutocompleteCategory() {
+function setAutocompleteCategory() {
     var country = document.getElementById('category').value;
-    if (category == 'select') {
-        // Show the "Please select a town or city" warning
+    if (category == 'select') { // do I want to use this code?
+        // Show the "Please enter a town or city" warning
         if (city == null) {
             $('#city-error').removeClass('no')
             return
         }
         // Adds class 'no' if it isn't already there
         $('#city-error').addClass('no')
+
     }
     else {
-    
-    //change this whole code, from component restrictions to ??
-    
-        autocomplete.setComponentRestrictions({ 'country': country });
-        map.setCenter(countries[country].center);
-        map.setZoom(countries[country].zoom);
-    
-        
-        
-        
+
+        ?
+        ? ?
+
     }
     clearResults();
     clearMarkers();
-}*/
+}
+
 
 function dropMarker(i) {
     return function() {
@@ -209,16 +235,19 @@ function dropMarker(i) {
     };
 }
 
+
 function addResult(result, i) {
     var results = document.getElementById('results');
     var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
     var markerIcon = MARKER_PATH + markerLetter + '.png';
+
 
     var tr = document.createElement('tr');
     tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
     tr.onclick = function() {
         google.maps.event.trigger(markers[i], 'click');
     };
+
 
     var iconTd = document.createElement('td');
     var nameTd = document.createElement('td');
@@ -234,6 +263,7 @@ function addResult(result, i) {
     results.appendChild(tr);
 }
 
+
 function clearResults() {
     var results = document.getElementById('results');
     while (results.childNodes[0]) {
@@ -241,8 +271,9 @@ function clearResults() {
     }
 }
 
-// Get the place details for a hotel. Show the information in an info window,
-// anchored on the marker for the hotel that the user selected.
+
+// Get the place details for a hotel/all three or just one. Show the information in an info window,
+// anchored on the marker for the hotel* that the user selected.
 function showInfoWindow() {
     var marker = this;
     places.getDetails({ placeId: marker.placeResult.place_id },
@@ -254,6 +285,7 @@ function showInfoWindow() {
             buildIWContent(place);
         });
 }
+
 
 // Load the place information into the HTML elements used by the info window.
 function buildIWContent(place) {
@@ -271,6 +303,7 @@ function buildIWContent(place) {
     else {
         document.getElementById('iw-phone-row').style.display = 'none';
     }
+
 
     // Assign a five-star rating to the hotel, using a black star ('&#10029;')
     // to indicate the rating the hotel has earned, and a white star ('&#10025;')
@@ -291,6 +324,7 @@ function buildIWContent(place) {
     else {
         document.getElementById('iw-rating-row').style.display = 'none';
     }
+
 
     // The regexp isolates the first part of the URL (domain plus subdomain)
     // to give a short URL for displaying in the info window.
