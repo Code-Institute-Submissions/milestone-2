@@ -14,7 +14,7 @@ var hostnameRegexp = new RegExp('^https?://.+?/');
 var countries = {
     'uk': {
         center: { lat: 54.8, lng: -4.6 },
-        zoom: 5
+        zoom: 5.3
     }
 };
 
@@ -25,7 +25,8 @@ function reset() {
     clearMarkers();
     $('#category')[0].selectedIndex = 0;
     $("#autocomplete").val("");
-    $('#results-heading').innerHTML("");                // there is still <h6>results</h6>
+    $('#results-heading').innerHTML("");
+    $('#hr').height(0);                                                //    this doesn't work
     map.setZoom(countries['uk'].zoom);
     map.setCenter(countries["uk"].center);
     place = "";
@@ -37,7 +38,7 @@ function initMap() {
         zoom: countries['uk'].zoom,
         center: countries['uk'].center,
         mapTypeControl: false,
-        panControl: false, // edit these??
+        panControl: false,                               // edit these??
         zoomControl: false,
         streetViewControl: false
     });
@@ -51,7 +52,7 @@ function initMap() {
     // Create the autocomplete object and associate it with the UI input control.
     // Place type "cities".
     autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */
+        /** @type {!HTMLInputElement} */                                        // do I need this?
         (
             document.getElementById('autocomplete')), {
             types: ['(cities)'],
@@ -62,7 +63,7 @@ function initMap() {
 
     // Event listeners.
     autocomplete.addListener('place_changed', onPlaceChanged);
-    document.getElementById('accom').addEventListener('change', onPlaceChanged);
+    document.getElementById('accommodation').addEventListener('change', onPlaceChanged);
     document.getElementById('bars').addEventListener('change', onPlaceChanged);
     document.getElementById('public').addEventListener('change', onPlaceChanged);
     document.getElementById('takeaway').addEventListener('change', onPlaceChanged);
@@ -77,7 +78,7 @@ function initMap() {
 // When the user selects a city, get the place details for the city and
 // zoom the map in on the city.
 function onPlaceChanged() {
-    if ($("#accommodation").is(':selected')) {
+    if ($("#accommodation").is(':selected')) {          // THIS DOESN'T WORK
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
@@ -148,6 +149,7 @@ function searchAccommodation() {
             clearResults();
             clearMarkers();
             document.getElementById('results-heading').innerHTML = "Results";
+            document.getElementById('hr').height(1);                                       //    check this works and then add to other searchAccom etc functions
 
 
             // Create a marker for each accommodation found, and assign a
