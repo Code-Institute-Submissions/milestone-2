@@ -77,4 +77,12 @@ The website is deployed and hosted on GitHub (https://jamesahorne.github.io/mile
 
 ## Credits
 -	In maps.js I largely used and adapted code found on the Google Maps Platform: (https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-hotelsearch).
+	-   I used Google's autocomplete feature in my search bar.
+	-   To intially center my map on the UK, I kept the 'UK' object in the 'countries' variable.
+	-   I kept the initMap function to initiate the map.
+	-   I kept the markers function to clear and drop the markers on the map.
+	-   I kept the results functions to add and clear the place results on the map.
+	-   I kept the info window functions to show and include the content of the info windows.
 -	I also integrated ideas and code in my JavaScript document that was used in a similar website to mine built by Ben Hasselgren: (https://benhasselgren.github.io/ifd-milestone-project-pages/).
+	-   I adapted the reset button, hiding the horizontal line and centering the map on the UK in addition to function.
+    -   I adapted the onPlaceChanged function by using the category search functions used and added in my own doNearbySearch function to it.
