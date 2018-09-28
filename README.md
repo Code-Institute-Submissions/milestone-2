@@ -57,13 +57,13 @@ I have documented the manual tests I performed via written documentation. I deci
 4.	Place marker info window:
     1.	Click on a place marker.
         1.	The relevant info window appears.
-    2.	Click the X button.
+    2.	Click the 'X' button.
         1.	The info window closes.
 5.	Map full screen feature:
     1.	Click on the full screen button (dashed square border in the top right-hand corner) and the map enlarges to full screen.
-    2.	To close the full screen feature, click on the close full screen button in the top right-hand corner or press ESC.
+    2.	To close the full screen feature, click on the close full screen button in the top right-hand corner or press the 'ESC' key.
 6.	To use the map’s zoom feature:
-    1.	Click the + and – and it zooms in and out.
+    1.	Click the '+' and '–' keys and it zooms in and out.
 7.	Results list:
     1.	When the map updates the results list updates.
     2.	When you click on a list result it shows upon the map and scrolls up to it.
