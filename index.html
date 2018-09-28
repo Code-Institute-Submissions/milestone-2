@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Happy Holidays</title>
+    <title>Happy Holidays UK</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,14 +21,14 @@
 <body>
 
 
-    <!--    Nav    -->
+    <!--    Header    -->
 
 
     <header class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <p class="navbar-brand" href="#">Happy Holidays</p>
+        <p class="navbar-brand">Happy Holidays UK</p>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-                <p class="nav-link" href="#">You could go anywhere...</p>
+                <p class="nav-link">You could go anywhere...</p>
             </li>
         </ul>
     </header>
@@ -54,7 +54,7 @@
                         <p class="lead" id="looking-for"><small>What are you looking for?</small></p>
                         <div id="controls">
                             <select id="category">
-                                <option value="select" selected>Select One</option>
+                                <option value="" selected>Select One</option>
                                 <option id="accommodation" value="accommodation">Accommodation</option>
                                 <option id="bars" value="bars">Bars/Cafes/Restaurants</option>
                                 <option id="public" value="public">Public Transport</option>
@@ -64,8 +64,7 @@
                         </div>
                     </div>
                 </div>
-
-                <button id="reset-button" type="button" class="btn btn-primary" onclick="reset()"><h6>Reset   <i class="fas fa-redo-alt"></i></h6></button>
+                <h6><button id="reset-button" type="button" class="btn btn-primary" onclick="reset()"><strong>Reset</strong>   <i class="fas fa-redo-alt"></i></button></h6>
             </div>
 
 
@@ -118,7 +117,6 @@
 
         <section class="row">
             <hr class="hr2" id="hr">
-            <!--    This doesn't work in $    -->
             <div class="col-12">
                 <h3 id="results-heading" class="header"></h3>
                 <div id="listing">
@@ -130,30 +128,31 @@
         </section>
 
 
-    </section>                                          <!--    1. Take notes on all the comments describing problems to have a list for Jim
-                                                                2. Finish off responsive CSS    -->
+    </section>
 
 
     <!--    Footer    -->
 
 
     <footer>
-        <div class="row">
-            <div class="offset-lg-3 col-lg-2">
-                <p class="text-uppercase">
-                    About
-                </p>
-                <p>
-                    A holiday destination finder.<br>Find information about where to stay, what to do and more.
-                </p>
-            </div>
-            <div class="offset-lg-7 col-lg-2">                      <!--    Acts like this div is on a separate row    -->
-                <p class="text-uppercase">
-                    Contact
-                </p>
-                <p>
-                    If you need any assistance, call us on 0118 123 4567.<br>Office hours Mon-Fri 9am-5pm.
-                </p>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-md-1 col-md-4 offset-lg-3 col-lg-2">
+                    <p class="text-uppercase">
+                        About
+                    </p>
+                    <p>
+                        A holiday destination finder.<br>Find information about where to stay, what to do and more.
+                    </p>
+                </div>
+                <div class="col-6 offset-md-2 col-md-4 offset-lg-2 col-lg-2">
+                    <p class="text-uppercase">
+                        Contact
+                    </p>
+                    <p>
+                        If you need any assistance, call us on 0118 123 4567.<br>Office hours Mon-Fri 9am-5pm.
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
@@ -162,8 +161,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeBRo2WASBAZBaHk5XQcoqBBMD3S7shJM&libraries=places&region=UK&callback=initMap" async defer></script>
     <script type="text/javascript" src="js/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeBRo2WASBAZBaHk5XQcoqBBMD3S7shJM&libraries=places&region=UK&callback=initMap" async defer></script>
 
 
 </body>
