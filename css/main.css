@@ -13,7 +13,7 @@ p {
 
 @media (min-width: 992px) {
   .header {
-    margin-top: 30px; }
+    margin-top: 20px; }
 
   .lead {
     margin-top: 15px;
@@ -22,8 +22,8 @@ p {
   #looking-for {
     margin-top: 30px; }
 
-  .hr2 {
-    /*margin-top: 37px;*/ } }
+  #hr {
+    margin-bottom: 0; } }
 select {
   color: #868e96; }
 
@@ -39,14 +39,14 @@ select {
   color: #343a40;
   border: 0; }
 
-.btn:hover {
-  color: #4582ec;
-  background-color: transparent;
-  border: none; }
+.btn:hover, .btn-primary:active {
+  color: #4582ec !important;
+  background-color: transparent !important;
+  border: none !important; }
 
-/*    this doesn't work, still an outline after you've clicked    */
-.btn-primary:focus {
-  outline: none !important; }
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none !important; }
 
 .hr1 {
   width: 1px;
@@ -68,7 +68,7 @@ select {
   margin-right: 3vw; }
 
 #hr {
-  margin-top: 30px; }
+  margin-top: 32px; }
 
 #map {
   width: 100%;
@@ -76,13 +76,16 @@ select {
 
 @media (max-width: 575.98px) {
   .nav-link {
-    font-size: 80%; } }
+    font-size: 80%; }
+
+  footer {
+    font-size: 50%; } }
 footer {
   background-color: #4582ec;
   color: white;
-  font-size: 70%; }
+  font-size: 70%;
+  padding-top: 5px; }
 
-/* The edited google map code */
 table {
   font-size: 12px; }
 
